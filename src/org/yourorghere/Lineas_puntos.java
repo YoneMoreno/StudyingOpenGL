@@ -84,11 +84,63 @@ public class Lineas_puntos extends JFrame{
             
             setLineWidth();
             setLineColorToRed();
+
+            gl.glColor3f(0, 1, 0);
+                drawGreenY();
+                drawGreenO();
+                drawGreenN();
+                gl.glVertex2f(180,100);
+                gl.glVertex2f(200,100);
+                
+                gl.glVertex2f(180,100);
+                gl.glVertex2f(180,75);
+                
+                gl.glVertex2f(180,75);
+                gl.glVertex2f(200,75);
+                
+                gl.glVertex2f(180,75);
+                gl.glVertex2f(180,50);
+                
+                gl.glVertex2f(180,50);
+                gl.glVertex2f(200,50);
+            gl.glEnd();
+        }
+
+        private void drawGreenN() {
+            gl.glVertex2f(140,100);
+            gl.glVertex2f(140,50);
             
-            delimitInitialVertices();
-                initialVertex();
-                endVertex();
-            delimitEndVertices();
+            gl.glVertex2f(140,100);
+            gl.glVertex2f(170,50);
+            
+            gl.glVertex2f(170,50);
+            gl.glVertex2f(170, 100);
+        }
+
+        private void drawGreenO() {
+            gl.glVertex2f(100,100);
+            gl.glVertex2f(100,50);
+            
+            gl.glVertex2f(100,50);
+            gl.glVertex2f(125,50);
+            
+            gl.glVertex2f(125,50);
+            gl.glVertex2f(125,100);
+            
+            gl.glVertex2f(125,100);
+            gl.glVertex2f(100,100);
+        }
+
+        private void drawGreenY() {
+            gl.glBegin(gl.GL_LINES);
+            gl.glVertex2f(0, 100);
+            gl.glVertex2f(50, 70);
+            
+            gl.glVertex2f(50, 70);
+            gl.glVertex2f(50, 0);
+            
+            gl.glVertex2f(50, 70);
+            gl.glVertex2f(100, 100);
         }
 
 
@@ -100,7 +152,7 @@ public class Lineas_puntos extends JFrame{
         
         }
         private void endVertex() {
-            gl.glVertex2f(5,0);
+            gl.glVertex2f(25.5f,0);
         }
 
         private void initialVertex() {
