@@ -23,14 +23,36 @@ public class Lineas_puntos extends JFrame{
     static GLU glu;
     
     public Lineas_puntos(){
+        setTitleSizeJFrame();
+        
+        GraphicListener listener = instantiateGraphicListener();
+        
+        GLCanvas canvas = createOpenGLCanvas();
+        addListener(canvas, listener);
+        transferContentFromJFrameToGLCanvas(canvas);
+    }
+
+    private void transferContentFromJFrameToGLCanvas(GLCanvas canvas) {
+        getContentPane().add(canvas);
+    }
+
+    private void addListener(GLCanvas canvas, GraphicListener listener) {
+        canvas.addGLEventListener(listener);
+    }
+
+    private GLCanvas createOpenGLCanvas() {
+        GLCanvas canvas = new GLCanvas(new GLCapabilities());
+        return canvas;
+    }
+
+    private GraphicListener instantiateGraphicListener() {
+        GraphicListener listener = new GraphicListener();
+        return listener;
+    }
+
+    private void setTitleSizeJFrame() {
         setTitle("Clase 2 de JOGL");
         setSize(700,700);
-        
-        GraphicListener listener = new GraphicListener();
-        
-        GLCanvas canvas = new GLCanvas(new GLCapabilities());
-        canvas.addGLEventListener(listener);
-        getContentPane().add(canvas);
     }
     
     public static void main(String[] args) {
@@ -43,30 +65,32 @@ public class Lineas_puntos extends JFrame{
     public class GraphicListener implements GLEventListener{
 
         public void init(GLAutoDrawable arg0) {
-            gl = arg0.getGL();
-            gl.glEnable(gl.GL_BLEND);
-            gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA);
+            getGL(arg0);
+            enableBlendColors();
+            
             
             
         }
 
+
         public void display(GLAutoDrawable arg0) {
-            glu = new GLU();
-            gl = arg0.getGL();
+            getOpenGLUtility();
+            getGL(arg0);
             
-            gl.glClearColor(0, 0, 1, 0);
+            specifyClearColorValuesWhenBufferYsEmpty();
             
-            gl.glMatrixMode(gl.GL_PROJECTION);
-            glu.gluOrtho2D(0, 200, 0, 150);
+            applyMatrixOpperationsToProjectionMatrixStack();
+            setUp2DViewingRegion();
             
-            gl.glLineWidth(7);
-            gl.glColor3f(1, 0, 0);
+            setLineWidth();
+            setLineColorToRed();
             
-            gl.glBegin(gl.GL_LINES);
-                gl.glVertex2f(0, 0);
-                gl.glVertex2f(5,0);
-            gl.glEnd();
+            delimitInitialVertices();
+                initialVertex();
+                endVertex();
+            delimitEndVertices();
         }
+
 
         public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         
@@ -75,6 +99,53 @@ public class Lineas_puntos extends JFrame{
         public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
         
         }
+        private void endVertex() {
+            gl.glVertex2f(5,0);
+        }
+
+        private void initialVertex() {
+            gl.glVertex2f(0, 0);
+        }
+
+        private void delimitEndVertices() {
+            gl.glEnd();
+        }
+
+        private void delimitInitialVertices() {
+            gl.glBegin(gl.GL_LINES);
+        }
+
+        private void setLineColorToRed() {
+            gl.glColor3f(1, 0, 0);
+        }
+
+        private void setLineWidth() {
+            gl.glLineWidth(7);
+        }
+
+        private void setUp2DViewingRegion() {
+            glu.gluOrtho2D(0, 200, 0, 150);
+        }
+
+        private void applyMatrixOpperationsToProjectionMatrixStack() {
+            gl.glMatrixMode(gl.GL_PROJECTION);
+        }
+
+        private void specifyClearColorValuesWhenBufferYsEmpty() {
+            gl.glClearColor(0, 0, 1, 0);
+        }
+
+        private void getOpenGLUtility() {
+            glu = new GLU();
+        }
         
+        private void enableBlendColors() {
+            gl.glEnable(gl.GL_BLEND);
+            gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA);
+        }
+
+        private void getGL(GLAutoDrawable arg0) {
+            gl = arg0.getGL();
+        }
     }
 }
